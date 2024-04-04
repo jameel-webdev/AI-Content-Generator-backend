@@ -29,6 +29,7 @@ export const register = async (req, res, next) => {
       email,
       password: hashedPassword,
       trialExpires: newTrialExpiryDate,
+      monthlyRequestCount: 100,
     });
     await newuser.save();
     res.json({
@@ -84,8 +85,6 @@ export const logout = async (req, res) => {
 // Profile
 export const getProfile = async (req, res, next) => {
   try {
-    // const { id } = req.params;
-
     const user = await User.findById(req.user._id).select("-password");
     if (user) {
       res.status(200).json({ success: true, user });

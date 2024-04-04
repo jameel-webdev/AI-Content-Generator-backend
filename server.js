@@ -5,6 +5,7 @@ import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
 
 //Importing Routes
 import userRoutes from "./routes/user.router.js";
+import genAiRoutes from "./routes/geminiai.router.js";
 
 connectDb(); //Database
 const port = process.env.PORT || 6000;
@@ -15,7 +16,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 //Routes
-app.use("/api/user", userRoutes);
+app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/ai", genAiRoutes);
 
 //Main route
 app.get("/", (req, res) => {
