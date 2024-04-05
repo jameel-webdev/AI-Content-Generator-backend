@@ -5,7 +5,8 @@ import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
 
 //Importing Routes
 import userRoutes from "./routes/user.router.js";
-import genAiRoutes from "./routes/geminiai.router.js";
+import genAiRoute from "./routes/geminiai.router.js";
+import paymentRoutes from "./routes/payment.route.js";
 
 connectDb(); //Database
 const port = process.env.PORT || 6000;
@@ -17,7 +18,8 @@ app.use(cookieParser());
 
 //Routes
 app.use("/api/v1/user", userRoutes);
-app.use("/api/v1/ai", genAiRoutes);
+app.use("/api/v1/ai", genAiRoute);
+app.use("/api/v1/payment", paymentRoutes);
 
 //Main route
 app.get("/", (req, res) => {

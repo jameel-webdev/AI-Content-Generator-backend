@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "content-genie-backend",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -26,7 +26,8 @@
     "cookie-parser": "^1.4.6",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.3.0"
+    "mongoose": "^8.3.0",
+    "stripe": "^14.24.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"
