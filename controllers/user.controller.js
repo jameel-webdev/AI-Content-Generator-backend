@@ -33,7 +33,7 @@ export const register = async (req, res, next) => {
     });
     await newuser.save();
     res.json({
-      status: true,
+      success: true,
       message: "Registration Successfull",
       user: {
         username,

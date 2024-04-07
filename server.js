@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import cookieParser from "cookie-parser";
 import { connectDb } from "./db/db.js";
 import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
@@ -14,6 +15,7 @@ const port = process.env.PORT || 6000;
 const app = express();
 //Middlewares
 app.use(express.json());
+app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
 app.use(cookieParser());
 
 //Routes
