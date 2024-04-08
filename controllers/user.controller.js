@@ -1,5 +1,6 @@
 import { User } from "../models/user.model.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import generateToken from "../utils/generateToken.js";
 
 // Registration
@@ -44,6 +45,7 @@ export const register = async (req, res, next) => {
     next(error);
   }
 };
+
 // Login
 export const login = async (req, res, next) => {
   try {
@@ -74,6 +76,7 @@ export const login = async (req, res, next) => {
     next(error);
   }
 };
+
 // Logout
 export const logout = async (req, res) => {
   res.cookie("jwt", "", {
@@ -82,6 +85,7 @@ export const logout = async (req, res) => {
   });
   res.status(200).json({ success: true, message: "User Logged Out" });
 };
+
 // Profile
 export const getProfile = async (req, res, next) => {
   try {
@@ -122,6 +126,21 @@ export const deleteProfile = async (req, res, next) => {
     const user = await User.findByIdAndDelete(req.user._id);
     if (user) {
       res.status(200).json({ success: true, message: "See you again!" });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+//User Authentication
+export const authUser = async (req, res, next) => {
+  try {
+    const decode = jwt.verify(req.cookies.jwt, process.env.JWT_SECRET);
+    console.log(!!decode?.userId);
+    if (decode?.userId) {
+      res.status(200).json({
+        userAuthenticated: true,
+      });
     }
   } catch (error) {
     next(error);
