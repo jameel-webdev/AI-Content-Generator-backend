@@ -89,8 +89,10 @@ export const logout = async (req, res) => {
 // Profile
 export const getProfile = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user?._id).select("-password");
-    console.log(user);
+    const user = await User.findById(req.user?._id)
+      .select("-password")
+      .populate("payments")
+      .populate("history");
     if (user) {
       res.status(200).json({ success: true, user });
     } else {
@@ -136,7 +138,6 @@ export const deleteProfile = async (req, res, next) => {
 export const authUser = async (req, res, next) => {
   try {
     const decode = jwt.verify(req.cookies.jwt, process.env.JWT_SECRET);
-    console.log(!!decode?.userId);
     if (decode?.userId) {
       res.status(200).json({
         userAuthenticated: true,

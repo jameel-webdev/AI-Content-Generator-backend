@@ -99,6 +99,10 @@ export const freeSubscription = async (req, res, next) => {
         success: true,
         message: `${user.subscriptionPlan} subscription plan updated successfully`,
       });
+    } else {
+      return res
+        .status(403)
+        .json({ success: false, message: "Subcription renewal not due yet" });
     }
   } catch (error) {
     next(error);
