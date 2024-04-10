@@ -29,7 +29,7 @@ export const stripePayment = async (req, res, next) => {
     });
   } catch (error) {
     next(error);
-    res.status(500).json({ success: false, error: error });
+    // res.status(500).json({ success: false, error: error });
   }
 };
 
@@ -39,7 +39,7 @@ export const verifyPayment = async (req, res, next) => {
     const paymentIntent = await stripe.paymentIntents.retrieve(paymentId);
     const { metadata, amount, status } = paymentIntent;
     const { userId, subscriptionPlan, monthlyRequestCount } = metadata;
-    if (status === "requires_payment_method") {
+    if (status === "succeeded") {
       const newPayment = await Payment.create({
         user: userId,
         reference: paymentId,
@@ -67,7 +67,17 @@ export const verifyPayment = async (req, res, next) => {
           success: true,
           message: "Payment verified successfully",
         });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Updating User payment verification failed",
+        });
       }
+    } else {
+      res.status(400).json({
+        success: false,
+        message: "Payment Failed, status not success",
+      });
     }
   } catch (error) {
     next(error);
