@@ -1,6 +1,7 @@
-import { User } from "../models/user.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { Content } from "../models/content.model.js";
+import { User } from "../models/user.model.js";
 import generateToken from "../utils/generateToken.js";
 
 // Registration
@@ -141,6 +142,29 @@ export const authUser = async (req, res, next) => {
     if (decode?.userId) {
       res.status(200).json({
         userAuthenticated: true,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+// DELETE HISTORY IN USER DETAILS
+export const deleteHistory = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { userId } = req.query;
+    const user = await User.findById(userId);
+    const content = await Content.findById(id);
+    const deleteOne = user.history.filter(
+      (ele) => ele.toString() !== content._id.toString()
+    );
+    user.history = deleteOne;
+    await user.save();
+    if (user) {
+      res.status(200).json({
+        success: true,
+        message: "Content History Deleted Successfully",
       });
     }
   } catch (error) {

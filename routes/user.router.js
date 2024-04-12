@@ -1,6 +1,7 @@
 import express from "express";
 import {
   authUser,
+  deleteHistory,
   deleteProfile,
   getProfile,
   login,
@@ -25,5 +26,8 @@ router
   .delete(protect, deleteProfile);
 
 router.get("/auth", authUser);
+
+//Deleting history
+router.post("/delete-content/:id", deleteHistory);
 
 export default router;
