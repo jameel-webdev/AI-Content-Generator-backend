@@ -83,7 +83,12 @@ export const logout = async (req, res) => {
   res.cookie("jwt", "", {
     httpOnly: true,
     expires: new Date(0),
+    secure: true,
+    sameSite: "none",
   });
+  if (req.session) {
+    req.session.destroy();
+  }
   res.status(200).json({ success: true, message: "User Logged Out" });
 };
 
